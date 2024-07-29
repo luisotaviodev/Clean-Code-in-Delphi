@@ -1,0 +1,270 @@
+unit untMenuPrincipal;
+
+interface
+
+uses Winapi.Windows, System.SysUtils;
+
+procedure Clear;
+procedure Menu;
+function cMenuPadrão: String;
+//Menu Clientes
+procedure MenuCliente;
+procedure CadastrarCliente;
+procedure AlterarCliente;
+procedure ExcluirCliente;
+procedure PesquisarCliente;
+//Menu Veículos
+procedure MenuVeiculo;
+procedure CadastrarVeiculo;
+procedure AlterarVeiculo;
+procedure ExcluirVeiculo;
+procedure PesquisarVeiculo;
+//Menu Locações
+procedure MenuLocacoes;
+procedure CadastrarLocacoes;
+procedure AlterarLocacoes;
+procedure ExcluirLocacoes;
+procedure PesquisarLocacoes;
+
+
+implementation
+
+procedure Clear;
+var
+  stdout: THandle;
+  csbi: TConsoleScreenBufferInfo;
+  ConsoleSize: DWORD;
+  NumWritten: DWORD;
+  Origin: TCoord;
+begin
+  stdout := GetStdHandle(STD_OUTPUT_HANDLE);
+  Win32Check(stdout<>INVALID_HANDLE_VALUE);
+  Win32Check(GetConsoleScreenBufferInfo(stdout, csbi));
+  ConsoleSize := csbi.dwSize.X * csbi.dwSize.Y;
+  Origin.X := 0;
+  Origin.Y := 0;
+  Win32Check(FillConsoleOutputCharacter(stdout, ' ', ConsoleSize, Origin,
+    NumWritten));
+  Win32Check(FillConsoleOutputAttribute(stdout, csbi.wAttributes, ConsoleSize, Origin,
+    NumWritten));
+  Win32Check(SetConsoleCursorPosition(stdout, Origin));
+end;
+
+procedure Menu;
+var
+  iCodigo: Integer;
+  cModulo: String;
+begin
+  Clear;
+  cModulo := '1 - Clientes ' + #13#10+
+             '2 - Veículos ' + #13#10+
+             '3 - Locações ';
+
+  Writeln('Menu Principal');
+  Writeln;
+
+  Writeln(cModulo);
+  Write(Output, 'Opção: ');
+  Readln(Input, iCodigo);
+
+  case iCodigo of
+    1: MenuCliente;
+    2: MenuVeiculo;
+    3: MenuLocacoes;
+    else
+    begin
+      Writeln('Opção Inválida');
+    end;
+  end;
+
+end;
+
+function cMenuPadrão: String;
+begin
+  Result := '1 - Cadastrar ' + #13#10+
+            '2 - Alterar   ' + #13#10+
+            '3 - Excluir   ' + #13#10+
+            '4 - Pesquisar ' + #13#10+
+            '5 - Voltar ';
+end;
+
+//Menu Clientes
+procedure MenuCliente;
+var
+  iCodigo: Integer;
+  cModulo: String;
+begin
+  Clear;
+  Writeln('Menu Clientes');
+  Writeln;
+
+  Writeln(cMenuPadrão);
+  Write(Output, 'Opção: ');
+  Readln(Input, iCodigo);
+
+  case iCodigo of
+    1: CadastrarCliente;
+    2: AlterarCliente;
+    3: ExcluirCliente;
+    4: PesquisarCliente;
+    5: Menu;
+    else
+    begin
+      Writeln('Opção Inválida');
+    end;
+  end;
+end;
+
+procedure CadastrarCliente;
+begin
+  Clear;
+  Writeln('Cadastrar Cliente');
+  Readln;
+  Menu;
+end;
+
+procedure AlterarCliente;
+begin
+  Clear;
+  Writeln('Alterar Dados Cliente');
+  Readln;
+  Menu;
+end;
+
+procedure ExcluirCliente;
+begin
+  Clear;
+  Writeln('Excluir Dados Cliente');
+  Readln;
+  Menu;
+end;
+
+procedure PesquisarCliente;
+begin
+  Clear;
+  Writeln('Pesquisar Cliente');
+  Readln;
+  Menu;
+end;
+
+//Menu Veículos
+procedure MenuVeiculo;
+var
+  iCodigo: Integer;
+  cModulo: String;
+begin
+  Clear;
+  Writeln('Menu Veículos');
+  Writeln;
+
+  Writeln(cMenuPadrão);
+  Write(Output, 'Opção: ');
+  Readln(Input, iCodigo);
+
+  case iCodigo of
+    1: CadastrarVeiculo;
+    2: AlterarVeiculo;
+    3: ExcluirVeiculo;
+    4: PesquisarVeiculo;
+    5: Menu;
+    else
+    begin
+      Writeln('Opção Inválida');
+    end;
+  end;
+
+end;
+
+procedure CadastrarVeiculo;
+begin
+  Clear;
+  Writeln('Cadastrar Veiculo');
+  Readln;
+  Menu;
+end;
+
+procedure AlterarVeiculo;
+begin
+  Clear;
+  Writeln('Alterar Dados Veiculo');
+  Readln;
+  Menu;
+end;
+
+procedure ExcluirVeiculo;
+begin
+  Clear;
+  Writeln('Excluir Dados Veiculo');
+  Readln;
+  Menu;
+end;
+
+procedure PesquisarVeiculo;
+begin
+  Clear;
+  Writeln('Pesquisar Veiculo');
+  Readln;
+  Menu;
+end;
+
+//Menu Locações
+procedure MenuLocacoes;
+var
+  iCodigo: Integer;
+  cModulo: String;
+begin
+  Clear;
+  Writeln('Menu Locações');
+  Writeln;
+
+  Writeln(cMenuPadrão);
+  Write(Output, 'Opção: ');
+  Readln(Input, iCodigo);
+
+  case iCodigo of
+    1: CadastrarLocacoes;
+    2: AlterarLocacoes;
+    3: ExcluirLocacoes;
+    4: PesquisarLocacoes;
+    5: Menu;
+    else
+    begin
+      Writeln('Opção Inválida');
+    end;
+  end;
+
+end;
+
+procedure CadastrarLocacoes;
+begin
+  Clear;
+  Writeln('Cadastrar Locações');
+  Readln;
+  Menu;
+end;
+
+procedure AlterarLocacoes;
+begin
+  Clear;
+  Writeln('Alterar Locações');
+  Readln;
+  Menu;
+end;
+
+procedure ExcluirLocacoes;
+begin
+  Clear;
+  Writeln('Excluir Locações');
+  Readln;
+  Menu;
+end;
+
+procedure PesquisarLocacoes;
+begin
+  Clear;
+  Writeln('Pesquisar Locações');
+  Readln;
+  Menu;
+end;
+
+end.

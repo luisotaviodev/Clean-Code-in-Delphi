@@ -1,0 +1,18 @@
+unit untCaseUseLocacao;
+
+interface
+
+uses uLocacao, untDtoLocacao, untResponse, uUtils, System.SysUtils, untUseCaseLocacao;
+
+type
+ TCaseUseLocacao =  class(TInterfacedObject, ICaseUseLocacao)
+
+   function Cadastrar(locacao: TLocacao): TResponse;
+   function Alterar(locacao: TLocacao): TResponse;
+   function Deletar(locacao: TLocacao): TResponse;
+   function Consultar(Dto: TDtoLocacao): TResponse;
+ end;
+
+implementation
+
+end.

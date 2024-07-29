@@ -1,0 +1,60 @@
+unit untCaseUseVeiculo;
+
+interface
+
+uses
+ uVeiculo, untDtoVeiculo, untUseCaseVeiculo, untResponse, untEnums, uUtils, System.SysUtils;
+
+ type
+   TCaseUseVeiculo = class(TInterfacedObject, ICaseUseVeiculo)
+    function Cadastrar(veiculo: TVeiculo): TResponse;
+    //Alterar
+    function Alterar(veiculo: TVeiculo): TResponse;
+    //Excluir
+    function Excluir(id: Integer): TResponse;
+    //Consultar
+    function Consultar(Dto: DtoVeiculo): TResponse;
+
+   end;
+
+implementation
+
+{ TCaseUseVeiculo }
+
+function TCaseUseVeiculo.Alterar(cliente: TVeiculo): TResponse;
+var
+  oAlterar: TResponse;
+begin
+  try
+    veiculo.ValidarRegrasNegocios;
+
+    oAlterar.Success   := True;
+    oAlterar.ErrorCode := 0;
+    oAlterar.Message   := RetornarMsgResponse.ALTERADO_COM_SUCESSO;
+    oAlterar.Data      := nil;
+  except
+    on e: exce do
+    begin
+      oAlterar := TratarException(e);
+    end;
+  end;
+
+  Result := oAlterar;
+end;
+
+function TCaseUseVeiculo.Cadastrar(cliente: TVeiculo): TResponse;
+begin
+
+end;
+
+function TCaseUseVeiculo.Consultar(Dto: DtoVeiculo): TResponse;
+begin
+
+end;
+
+function TCaseUseVeiculo.Excluir(id: Integer): TResponse;
+begin
+
+end;
+
+end.

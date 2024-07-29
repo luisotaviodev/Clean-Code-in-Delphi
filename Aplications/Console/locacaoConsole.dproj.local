@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/12/18 17:20:28.000.164,=C:\Users\Usuário\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/12/18 17:33:05.000.801,=C:\Users\Usuário\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/12/18 17:41:28.000.190,=C:\Users\Usuário\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/07/03 22:23:45.000.479,C:\Curso_Clean_Arquitetura\Aplications\Console\locacaoConsole.dproj=C:\Users\Usuário\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2024/07/03 22:24:10.000.636,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/03 22:24:26.000.270,C:\Curso_Clean_Arquitetura\Aplications\Console\untMenuPrincipal.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/04 18:02:27.000.335,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/04 18:02:50.000.395,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Core\Models\uCliente.pas</Transaction>
+    <Transaction>2024/07/04 18:24:34.000.512,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/04 18:25:47.000.693,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Core\Ports\untlUseCaseCliente.pas</Transaction>
+    <Transaction>2024/07/04 18:26:06.000.525,C:\Curso_Clean_Arquitetura\Core\Ports\untlUseCaseCliente.pas=C:\Curso_Clean_Arquitetura\Core\Ports\untUseCaseCliente.pas</Transaction>
+    <Transaction>2024/07/04 18:32:53.000.041,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/04 18:33:07.000.034,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Core\Response\uResponse.pas</Transaction>
+    <Transaction>2024/07/04 18:33:20.000.489,C:\Curso_Clean_Arquitetura\Core\Response\uResponse.pas=C:\Curso_Clean_Arquitetura\Core\Response\untResponse.pas</Transaction>
+    <Transaction>2024/07/04 22:50:04.000.807,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/04 22:50:48.000.527,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Core\DTO\untDTOCliente.pas</Transaction>
+    <Transaction>2024/07/10 17:40:49.000.262,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/10 17:41:28.000.758,C:\Curso_Clean_Arquitetura\Core\UseCases\untCaseUseClient.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/10 18:13:49.000.705,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/10 18:14:17.000.656,C:\Curso_Clean_Arquitetura\Core\Enums\untEnums.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/10 18:40:20.000.696,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/10 18:40:40.000.245,C:\Curso_Clean_Arquitetura\Core\Exception\untExceptions.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/13 21:12:37.000.468,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/13 21:13:26.000.002,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Utils\uUtils.pas</Transaction>
+    <Transaction>2024/07/17 17:37:14.000.625,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 17:37:33.000.810,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Core\Models\uVeiculo.pas</Transaction>
+    <Transaction>2024/07/17 17:44:25.000.157,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 17:44:40.000.112,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Core\UseCases\untCaseUseVeiculo.pas</Transaction>
+    <Transaction>2024/07/17 17:47:29.000.453,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 17:47:42.000.923,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Core\DTO\untDtoVeiculo.pas</Transaction>
+    <Transaction>2024/07/17 17:50:49.000.247,C:\Curso_Clean_Arquitetura\Core\UseCases\untCaseUseVeiculo.pas=</Transaction>
+    <Transaction>2024/07/17 17:51:05.000.970,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 17:51:23.000.904,C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\untUseCaseVeiculo.pas</Transaction>
+    <Transaction>2024/07/17 17:56:20.000.981,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 17:58:51.000.224,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 17:59:04.000.425,C:\Curso_Clean_Arquitetura\Core\Ports\untUseCaseVeiculo.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 18:00:19.000.802,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/17 18:00:45.000.554,C:\Curso_Clean_Arquitetura\Core\UseCases\untCaseUseVeiculo.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:41:54.763,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:42:11.285,C:\Curso_Clean_Arquitetura\Core\Models\uLocacao.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:50:09.666,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:50:36.453,C:\Curso_Clean_Arquitetura\Core\Ports\untUseCaseLocacao.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:53:19.978,C:\Curso_Clean_Arquitetura\Core\DTO\untDt0Cliente.pas=C:\Curso_Clean_Arquitetura\Core\DTO\untDTOCliente.pas</Transaction>
+    <Transaction>2024/07/29 17:53:24.974,C:\Curso_Clean_Arquitetura\Core\DTO\untDtoCliente.pas=C:\Curso_Clean_Arquitetura\Core\DTO\untDt0Cliente.pas</Transaction>
+    <Transaction>2024/07/29 17:55:20.332,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:55:37.667,C:\Curso_Clean_Arquitetura\Core\DTO\untDtoLocacao.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:58:43.965,=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+    <Transaction>2024/07/29 17:58:58.444,C:\Curso_Clean_Arquitetura\Core\UseCases\untCaseUseLocacao.pas=C:\Curso_Clean_Arquitetura\Aplications\Console\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

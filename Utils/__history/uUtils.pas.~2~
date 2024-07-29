@@ -1,0 +1,23 @@
+unit uUtils;
+
+interface
+
+uses System.SysUtils, untResponse;
+
+function TratarExeception(e: Exception): TResponse;
+
+implementation
+
+function TratarExeception(e: Exception): TResponse;
+var
+  oResponse: TResponse;
+begin
+  oResponse.Success   := False;
+  oResponse.Message   := e.Message;
+  oResponse.ErrorCode := 0;
+  oResponse.Data      := nil;
+
+  Result := oResponse;
+end;
+
+end.

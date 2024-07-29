@@ -1,0 +1,44 @@
+unit untCaseUseVeiculo;
+
+interface
+
+uses
+ uVeiculo, untDtoVeiculo, untUseCaseVeiculo, untResponse;
+
+ type
+   TCaseUseVeiculo = class(TInterfacedObject, ICaseUseVeiculo)
+    function Cadastrar(cliente: TVeiculo): TResponse;
+    //Alterar
+    function Alterar(cliente: TVeiculo): TResponse;
+    //Excluir
+    function Excluir(id: Integer): TResponse;
+    //Consultar
+    function Consultar(Dto: DtoVeiculo): TResponse;
+
+   end;
+
+implementation
+
+{ TCaseUseVeiculo }
+
+function TCaseUseVeiculo.Alterar(cliente: TVeiculo): TResponse;
+begin
+
+end;
+
+function TCaseUseVeiculo.Cadastrar(cliente: TVeiculo): TResponse;
+begin
+
+end;
+
+function TCaseUseVeiculo.Consultar(Dto: DtoVeiculo): TResponse;
+begin
+
+end;
+
+function TCaseUseVeiculo.Excluir(id: Integer): TResponse;
+begin
+
+end;
+
+end.

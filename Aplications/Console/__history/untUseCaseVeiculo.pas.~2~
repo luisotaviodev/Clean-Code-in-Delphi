@@ -1,0 +1,21 @@
+unit untUseCaseVeiculo;
+
+interface
+
+uses
+  untEnums, uVeiculo, untDTOVeiculo, untResponse;
+
+ICaseUseVeiculo = interface
+ //Cadastrar
+ function Cadastrar(veiculo: TVeiculo): TResponse;
+ //Alterar
+ function Alterar(veiculo: TVeiculo): TResponse;
+ //Excluir
+ function Excluir(id: TVeiculo): TResponse;
+ //Consultar
+ function Consultar(Dto: DtoVeiculo): TResponse;
+
+ end;
+implementation
+
+end.

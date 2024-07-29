@@ -1,0 +1,18 @@
+unit untExceptions;
+
+interface
+
+uses System.SysUtils;
+
+type
+TExceptionNome = class(Exception);
+
+procedure ExceptionNome;
+implementation
+
+procedure ExceptionNome;
+begin
+
+end;
+
+end.

@@ -1,0 +1,76 @@
+unit untMenuPrincipal;
+
+interface
+
+uses Winapi.Windows, System.SysUtils;
+
+procedure Clear;
+procedure Menu;
+procedure MenuClientes;
+procedure MenuVeiculos;
+procedure MenuLocacoes;
+
+
+implementation
+
+procedure Clear;
+var
+  stdout: THandle;
+  csbi: TConsoleScreenBufferInfo;
+  ConsoleSize: DWORD;
+  NumWritten: DWORD;
+  Origin: TCoord;
+begin
+  stdout := GetStdHandle(STD_OUTPUT_HANDLE);
+  Win32Check(stdout<>INVALID_HANDLE_VALUE);
+  Win32Check(GetConsoleScreenBufferInfo(stdout, csbi));
+  ConsoleSize := csbi.dwSize.X * csbi.dwSize.Y;
+  Origin.X := 0;
+  Origin.Y := 0;
+  Win32Check(FillConsoleOutputCharacter(stdout, ' ', ConsoleSize, Origin,
+    NumWritten));
+  Win32Check(FillConsoleOutputAttribute(stdout, csbi.wAttributes, ConsoleSize, Origin,
+    NumWritten));
+  Win32Check(SetConsoleCursorPosition(stdout, Origin));
+end;
+
+procedure Menu;
+var
+  iCodigo: Integer;
+  cModulo: String;
+begin
+  cModulo := '1 - Clientes ' + #13#10+
+             '2 - Veículos ' + #13#10+
+             '3 - Locações ';
+
+  Writeln('Menu Principal');
+  Writeln;
+
+  Writeln(cModulo);
+  Write(Output, 'Opção: ');
+  Readln(Input, iCodigo);
+
+  case iCodigo of
+    1: MenuClientes;
+    2: MenuVeiculos;
+    3: MenuLocacoes;
+  end;
+
+end;
+
+procedure MenuClientes;
+begin
+
+end;
+
+procedure MenuVeiculos;
+begin
+
+end;
+
+procedure MenuLocacoes;
+begin
+
+end;
+
+end.

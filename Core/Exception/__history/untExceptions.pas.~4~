@@ -1,0 +1,40 @@
+unit untExceptions;
+
+interface
+
+uses System.SysUtils;
+
+type
+TExceptionNome         = class(Exception);
+TExceptionMinNome      = class(Exception);
+TExceptionDocumento    = class(Exception);
+TExceptionMinDocumento = class(Exception);
+
+procedure ExceptionNome;
+procedure ExceptionMinNome;
+procedure ExceptionDocumento;
+procedure ExceptionMinDocumento;
+
+implementation
+
+procedure ExceptionNome;
+begin
+  raise TExceptionNome.Create('Nome deve ser informado.');
+end;
+
+procedure ExceptionMinNome;
+begin
+  raise TExceptionMinNome.Create('Nome deve conter no minímo 4 caracteres.');
+end;
+
+procedure ExceptionDocumento;
+begin
+  raise TExceptionDocumento.Create('Documento deve ser informado.');
+end;
+
+procedure ExceptionMinDocumento;
+begin
+  raise TExceptionDocumento.Create('Documento deve conter no minímo 4 caracteres.');
+end;
+
+end.

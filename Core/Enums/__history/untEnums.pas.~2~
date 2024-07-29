@@ -1,0 +1,27 @@
+unit untEnums;
+
+interface
+
+type
+  TMsgResponse = Record
+    CADASTRADO_COM_SUCESSO,
+    ALTERADO_COM_SUCESSO,
+    CONSULTA_REALIZADA_COM_SUCESSO,
+    CONSULTA_SEM_RETORNO,
+    DELETADO_COM_SUCESSO: String;
+  End;
+
+  function RetornarMsgResponse: TMsgResponse;
+
+implementation
+
+function RetornarMsgResponse: TMsgResponse;
+begin
+  Result.CADASTRADO_COM_SUCESSO         := 'Cadastrado com Sucesso!';
+  Result.ALTERADO_COM_SUCESSO           := 'Alterado com Sucesso!';
+  Result.DELETADO_COM_SUCESSO           := 'Deletado com Sucesso!';
+  Result.CONSULTA_REALIZADA_COM_SUCESSO := 'Consulta realizada com Sucesso!';
+  Result.CONSULTA_SEM_RETORNO           := 'Consulta sem Retorno!';
+end;
+
+end.

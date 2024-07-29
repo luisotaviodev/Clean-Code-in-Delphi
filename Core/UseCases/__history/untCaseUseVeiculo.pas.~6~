@@ -1,0 +1,14 @@
+unit untCaseUseVeiculo;
+
+interface
+
+uses
+ uVeiculo, untDtoVeiculo, untUseCaseVeiculo, untResponse;
+
+ type
+   TCaseUseVeiculo = class(TInterfacedObject, ICaseUseVeiculo);
+
+
+implementation
+
+end.
