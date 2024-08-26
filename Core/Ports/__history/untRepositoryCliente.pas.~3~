@@ -1,0 +1,16 @@
+unit untRepositoryCliente;
+
+interface
+
+uses uCliente, untDtoCliente, System.Generics.Collections;
+
+type
+  IRepositoryCliente = interface
+    procedure Cadastrar(oCliente: TCliente);
+    procedure Alterar(oCliente: TCliente);
+    procedure Excluir(id: Integer);
+    function Consultar(dtoCliente: DtoCliente): TList<TCliente>;
+  end;
+implementation
+
+end.

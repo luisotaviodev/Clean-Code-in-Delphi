@@ -1,0 +1,135 @@
+unit uRepositoryVeiculo;
+
+interface
+
+uses uVeiculo, untDtoVeiculo, untRepositoryVeiculo, System.Generics.Collections, System.SysUtils, untConfigDB, uUtils;
+
+type
+  TRepositoryVeiculo = class(TInterfacedObject, IRepositoryVeiculo)
+  private
+    FLista: TObjectList<TVeiculo>;
+    ConfiguracaoDB: TConfigurarDB;
+    procedure SetLista(const Value: TObjectList<TVeiculo>);
+  published
+
+    procedure Cadastrar(oVeiculo: TVeiculo);
+    procedure Alterar(oVeiculo: TVeiculo);
+    procedure Excluir(id: Integer);
+    function Consultar(dtoVeiculo: DtoVeiculo): TObjectList<TVeiculo>;
+
+    property Lista: TObjectList<TVeiculo> read FLista write SetLista;
+
+    constructor Create;
+    destructor Destroy; override;
+  end;
+implementation
+
+{ TRepositoryVeiculo }
+
+procedure TRepositoryVeiculo.Alterar(oVeiculo: TVeiculo);
+var
+ cSQL: String;
+begin
+  cSQL := 'UPDATE VEICULOS    '
+      +QL+'   SET NOME     =  ' + QuotedStr(oVeiculo.Nome)
+      +QL+'      ,PLACA    =  ' + QuotedStr(oVeiculo.Placa)
+      +QL+'      ,VALOR    =  ' + StringReplace(CurrToStr(oVeiculo.Valor), ',', '.', [])
+      +QL+'      ,STATUS   =  ' + QuotedStr(ConverterStatusStr(oVeiculo.Status))
+      +QL+' WHERE ID = ' + IntToStr(oVeiculo.Id);
+
+  ConfiguracaoDB.ExecSQL(cSQL);
+end;
+
+procedure TRepositoryVeiculo.Cadastrar(oVeiculo: TVeiculo);
+var
+  cSQL: String;
+begin
+  cSQL := 'INSERT INTO VEICULOS (NOME                                                 '
+      +QL+'                     ,PLACA                                                '
+      +QL+'                     ,VALOR                                                '
+      +QL+'                     ,STATUS                                               '
+      +QL+'              VALUES( ' + QuotedStr(oVeiculo.Nome)
+      +QL+'                     ,' + QuotedStr(oVeiculo.Placa)
+      +QL+'                     ,' + StringReplace(CurrToStr(oVeiculo.Valor), ',', '.', [])
+      +QL+'                     ,' + QuotedStr(ConverterStatusStr(oVeiculo.Status))+')';
+
+  ConfiguracaoDB.ExecSQL(cSQL);
+end;
+
+function TRepositoryVeiculo.Consultar(dtoVeiculo: DtoVeiculo): TObjectList<TVeiculo>;
+var
+  cSQL: String;
+  oVeiculo: TVeiculo;
+begin
+  cSQL := 'SELECT * FROM CLIENTES WHERE 1 = 1 ';
+  if(dtoVeiculo.id > 0)then
+  begin
+    cSQL := cSQL + ' AND ID = ' + IntToStr(dtoVeiculo.id);
+  end
+  else
+  begin
+    if(Trim(dtoVeiculo.Nome) <> '')then
+    begin
+      cSQL := cSQL + ' AND NOME LIKE ' + QuotedStr('%' + dtoVeiculo.Nome + '%');
+    end;
+
+    if(Trim(dtoVeiculo.Placa) <> '')then
+    begin
+      cSQL := cSQL + ' AND PLACA LIKE ' + QuotedStr('%' + dtoVeiculo.Placa + '%');
+    end;
+  end;
+
+  if(ConfiguracaoDB.Consultar(cSQL))then
+  begin
+    Lista.Clear;
+
+    with ConfiguracaoDB do
+    begin
+      Query.First;
+
+      while not Query.Eof do
+      begin
+        oVeiculo        := TVeiculo.Create;
+        oVeiculo.Id     := Query.FieldByName('ID').AsInteger;
+        oVeiculo.Nome   := Query.FieldByName('NOME').AsString;
+        oVeiculo.Placa  := Query.FieldByName('PLACA').AsString;
+        oVeiculo.Valor  := Query.FieldByName('VALOR').AsCurrency;
+        oVeiculo.Status := ConverterStrStatus(Query.FieldByName('STATUS').AsString);
+
+        Lista.Add(oVeiculo);
+
+        Query.Next;
+      end;
+    end;
+  end;
+
+  Result := Lista;
+end;
+
+constructor TRepositoryVeiculo.Create;
+begin
+  Lista          := TObjectList<TVeiculo>.Create;
+  ConfiguracaoDB := TConfigurarDB.Create;
+end;
+
+destructor TRepositoryVeiculo.Destroy;
+begin
+  Lista.Free;
+  ConfiguracaoDB.Free;
+  inherited;
+end;
+
+procedure TRepositoryVeiculo.Excluir(id: Integer);
+var
+  cSQL: String;
+begin
+  cSQL :=  'DELETE FROM VEICULOS WHERE ID = ' + IntToStr(id);
+  ConfiguracaoDB.ExecSQL(cSQL);
+end;
+
+procedure TRepositoryVeiculo.SetLista(const Value: TObjectList<TVeiculo>);
+begin
+  FLista := Value;
+end;
+
+end.

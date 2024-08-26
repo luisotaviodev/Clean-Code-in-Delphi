@@ -1,0 +1,5 @@
+[conexao]
+server=localhost\5432
+database=CleanArq
+user=postgres
+password=postgres

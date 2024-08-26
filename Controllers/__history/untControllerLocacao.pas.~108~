@@ -1,0 +1,293 @@
+unit untControllerLocacao;
+
+interface
+
+uses uRepositoryLocacao, untCaseUseLocacao, untUseCaseLocacao, untResponse, untDtoLocacao, uLocacao, untEnums, uUtils,
+uCliente, uVeiculo, untDtoVeiculo, untDtoCliente, uRepositoryCliente, uRepositoryVeiculo, untCaseUseVeiculo, untCaseUseClient,
+untUseCaseVeiculo, untUseCaseCliente, System.SysUtils, untPresenter;
+
+type
+  TControllerCliente = class
+  private
+    FCaseUseCliente: TCaseUseClient;
+    FCaseUseLocacao: TCaseUseLocacao;
+    FCaseUseVeiculo: TCaseUseVeiculo;
+    FPresenter: TPresenter;
+    procedure SetCaseUseCliente(const Value: TCaseUseClient);
+    procedure SetCaseUseLocacao(const Value: TCaseUseLocacao);
+    procedure SetCaseUseVeiculo(const Value: TCaseUseVeiculo);
+    procedure SetPresenter(const Value: TPresenter);
+
+  published
+    function Cadastrar(iIdCliente, iIdVeiculo: Integer): String;
+    function Alterar(iIdCliente, iIdVeiculo, iIdLocacao: Integer; DataDevolucao: TDateTime): String;
+    function Excluir(iIdLocacao: Integer): String;
+    function Consultar(iIdLocacao, iIdCliente: Integer; DataLocacao, DataDevolucao: TDateTime): String;
+
+    property CaseUseLocacao: TCaseUseLocacao read FCaseUseLocacao write SetCaseUseLocacao;
+    property CaseUseVeiculo: TCaseUseVeiculo read FCaseUseVeiculo write SetCaseUseVeiculo;
+    property CaseUseCliente: TCaseUseClient read FCaseUseCliente write SetCaseUseCliente;
+    property Presenter: TPresenter read FPresenter write SetPresenter;
+
+    constructor Create(oRepositoryLocacao: TRepositoryLocacao; oRepositoryClient: TRepositoryCliente;
+    oRepositoryVeiculo: TRepositoryVeiculo; oPresenter: TPresenter);
+    destructor Destroy;override;
+  end;
+implementation
+
+{ TControllerCliente }
+
+
+{ TControllerCliente }
+
+function TControllerCliente.Alterar(iIdCliente, iIdVeiculo, iIdLocacao: Integer;
+  DataDevolucao: TDateTime): String;
+  var
+  oResponse, oResponseVeiculo: TResponse;
+  oCliente: TCliente;
+  oVeiculo: TVeiculo;
+  oLocacao: TLocacao;
+  oDtoCliente: DtoCliente;
+  oDtoVeiculo: DtoVeiculo;
+  oDtoLocacao: TDtoLocacao;
+begin
+  if(iIdCliente > 0)then
+  begin
+    oDtoCliente.id := iIdCliente;
+    oResponse      := CaseUseCliente.Consultar(oDtoCliente);
+
+    if((oResponse.Success)and(oResponse.Message = RetornarMsgResponse.CONSULTA_REALIZADA_SEM_RETORNO))then
+    begin
+      oResponse.Message   := 'Id do Cliente Inválido.';
+      oResponse.ErrorCode := RetornarErrorsCode.ID_INVALIDO;
+
+      Result := Presenter.ConverterResponse(oResponse);
+      Exit;
+    end
+    else
+    begin
+      oCliente := TCliente(oResponse.Data[0])
+    end;
+  end;
+
+  if(iIdVeiculo > 0)then
+  begin
+    oDtoVeiculo.id := iIdVeiculo;
+    oResponse      := CaseUseVeiculo.Consultar(oDtoVeiculo);
+
+    if((oResponse.Success)and(oResponse.Message = RetornarMsgResponse.CONSULTA_REALIZADA_SEM_RETORNO))then
+    begin
+      oResponse.Message   := 'Id do Veiculo Inválido.';
+      oResponse.ErrorCode := RetornarErrorsCode.ID_INVALIDO;
+
+      Result := Presenter.ConverterResponse(oResponse);
+      Exit;
+    end
+    else
+    begin
+      oVeiculo := TVeiculo(oResponse.Data[0])
+    end;
+  end;
+
+  if(iIdLocacao > 0)then
+  begin
+    oDtoLocacao.id := iIdLocacao;
+    oResponse      := CaseUseLocacao.Consultar(oDtoLocacao);
+
+    if((oResponse.Success)and(oResponse.Message = RetornarMsgResponse.CONSULTA_REALIZADA_SEM_RETORNO))then
+    begin
+      oResponse.Message   := 'Id do Locacao Inválido.';
+      oResponse.ErrorCode := RetornarErrorsCode.ID_INVALIDO;
+
+      Result := Presenter.ConverterResponse(oResponse);
+      Exit;
+    end
+    else
+    begin
+      oLocacao := TLocacao(oResponse.Data[0])
+    end;
+  end;
+
+  if(iIdCliente > 0)then
+    oLocacao.Cliente :=  oCliente;
+
+  if(iIdVeiculo > 0)then
+    oLocacao.Veiculo :=  oVeiculo;
+
+  if(DataDevolucao <> StrToDate('30/12/1899'))then
+  begin
+    oLocacao.DataDevolucao := DataDevolucao;
+  end;
+
+  oResponse := CaseUseLocacao.Alterar(oLocacao);
+
+  if(oResponse.Success)then
+  begin
+    if(oLocacao.Veiculo.Id <> oLocacao.VeiculoAtual.Id)then
+    begin
+      oLocacao.VeiculoAtual.Status := Disponivel;
+      oResponseVeiculo := CaseUseVeiculo.Alterar(oLocacao.VeiculoAtual);
+
+      if(not(oResponseVeiculo.Success)and(not(oResponse.Message = RetornarMsgResponse.ALTERADO_COM_SUCESSO)))then
+      begin
+        oResponseVeiculo.Message   := 'Erro ao Atualizar Status do Veiculo.';
+        oResponseVeiculo.ErrorCode := RetornarErrorsCode.ERROR_BANCO_DADOS;
+
+        Result := Presenter.ConverterResponse(oResponseVeiculo);
+      end
+      else
+      begin
+        oLocacao.Veiculo.Status := Alugado;
+        oResponseVeiculo := CaseUseVeiculo.Alterar(oLocacao.Veiculo);
+        if(not(oResponseVeiculo.Success)and(not(oResponse.Message = RetornarMsgResponse.ALTERADO_COM_SUCESSO)))then
+        begin
+          oResponseVeiculo.Message   := 'Erro ao Atualizar Status do Veiculo.';
+          oResponseVeiculo.ErrorCode := RetornarErrorsCode.ERROR_BANCO_DADOS;
+
+          Result := Presenter.ConverterResponse(oResponseVeiculo);
+        end
+      end;
+    end;
+  end;
+
+  Result := Presenter.ConverterResponse(oResponse);
+end;
+
+function TControllerCliente.Cadastrar(iIdCliente, iIdVeiculo: Integer): String;
+var
+  oResponse, oResponseVeiculo: TResponse;
+  oCliente: TCliente;
+  oVeiculo: TVeiculo;
+  oLocacao: TLocacao;
+  oDtoCliente: DtoCliente;
+  oDtoVeiculo: DtoVeiculo;
+  oDtoLocacao: TDtoLocacao;
+begin
+  oDtoCliente.id := iIdCliente;
+
+  oResponse := CaseUseCliente.Consultar(oDtoCliente);
+
+  if((oResponse.Success)and(oResponse.Message = RetornarMsgResponse.CONSULTA_REALIZADA_SEM_RETORNO))then
+  begin
+    oResponse.Message   := 'Id do Cliente Inválido.';
+    oResponse.ErrorCode := RetornarErrorsCode.ID_INVALIDO;
+
+    Result := Presenter.ConverterResponse(oResponse);
+    Exit;
+  end;
+  oCliente := TCliente(oResponse.Data[0]);
+
+  oDtoVeiculo.id := iIdVeiculo;
+  oResponse := CaseUseVeiculo.Consultar(oDtoVeiculo);
+
+  if((oResponse.Success)and(oResponse.Message = RetornarMsgResponse.CONSULTA_REALIZADA_SEM_RETORNO))then
+  begin
+    oResponse.Message   := 'Id do Veiculo Inválido.';
+    oResponse.ErrorCode := RetornarErrorsCode.ID_INVALIDO;
+
+    Result := Presenter.ConverterResponse(oResponse);
+    Exit;
+  end;
+  oVeiculo := TVeiculo(oResponse.Data[0]);
+
+  oLocacao         := TLocacao.Create;
+  oLocacao.Cliente := oCliente;
+  oLocacao.Veiculo := oVeiculo;
+
+  oResponse := CaseUseLocacao.Cadastrar(oLocacao);
+
+  oLocacao.Free;
+
+  if(oResponse.Success)then
+  begin
+    oVeiculo.Status  := Alugado;
+    oResponseVeiculo := CaseUseVeiculo.Alterar(oVeiculo);
+
+    if(oResponseVeiculo.Success = false)then
+    begin
+      oResponseVeiculo.Message   := 'Erro ao alterar Status do Veiculo.';
+      oResponseVeiculo.ErrorCode := RetornarErrorsCode.ERROR_BANCO_DADOS;
+
+      Result := Presenter.ConverterResponse(oResponseVeiculo);
+      Exit;
+    end;
+  end;
+
+  Result := Presenter.ConverterResponse(oResponse);
+end;
+
+function TControllerCliente.Consultar(iIdLocacao, iIdCliente: Integer;
+  DataLocacao, DataDevolucao: TDateTime): String;
+var
+  oResponse: TResponse;
+  oDtoLocacao: TDtoLocacao;
+begin
+  oDtoLocacao.Id            := iIdLocacao;
+  oDtoLocacao.IdCliente     := iIdCliente;
+  oDtoLocacao.DataLocacao   := DataLocacao;
+  oDtoLocacao.DataDevolucao := DataDevolucao;
+
+  oResponse :=  CaseUseLocacao.Consultar(oDtoLocacao);
+
+  Result := Presenter.ConverterResponse(oResponse);
+end;
+
+constructor TControllerCliente.Create(oRepositoryLocacao: TRepositoryLocacao;
+  oRepositoryClient: TRepositoryCliente;
+  oRepositoryVeiculo: TRepositoryVeiculo; oPresenter: TPresenter);
+begin
+  Self.Presenter := oPresenter;
+  CaseUseLocacao := TCaseUseLocacao.Create(oRepositoryLocacao);
+  CaseUseVeiculo := TCaseUseVeiculo.Create(oRepositoryVeiculo);
+  CaseUseCliente := TCaseUseClient.Create(oRepositoryClient);
+end;
+
+destructor TControllerCliente.Destroy;
+begin
+  CaseUseLocacao.Free;
+  CaseUseVeiculo.Free;
+  CaseUseCliente.Free;
+  inherited;
+end;
+
+function TControllerCliente.Excluir(iIdLocacao: Integer): String;
+var
+  oResponse: TResponse;
+  oDtoLocacao: TDtoLocacao;
+begin
+  oDtoLocacao.Id := iIdLocacao;
+  oResponse      := CaseUseLocacao.Consultar(oDtoLocacao);
+
+  if((oResponse.Success)and(oResponse.Message = RetornarMsgResponse.CONSULTA_REALIZADA_SEM_RETORNO))then
+  begin
+    Result := 'Id da Locação Inválido';
+    Exit;
+  end;
+
+  oResponse := CaseUseLocacao.Excluir(iIdLocacao);
+
+  Result := Presenter.ConverterResponse(oResponse);
+end;
+
+
+procedure TControllerCliente.SetCaseUseCliente(const Value: TCaseUseClient);
+begin
+  FCaseUseCliente := Value;
+end;
+
+procedure TControllerCliente.SetCaseUseLocacao(const Value: TCaseUseLocacao);
+begin
+  FCaseUseLocacao := Value;
+end;
+
+procedure TControllerCliente.SetCaseUseVeiculo(const Value: TCaseUseVeiculo);
+begin
+  FCaseUseVeiculo := Value;
+end;
+
+procedure TControllerCliente.SetPresenter(const Value: TPresenter);
+begin
+  FPresenter := Value;
+end;
+
+end.

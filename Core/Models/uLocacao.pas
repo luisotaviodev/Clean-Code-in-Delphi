@@ -13,22 +13,30 @@ type
     FId           : Integer;
     FDataDevolucao: TDateTime;
     FVeiculo      : TVeiculo;
+    FHash: String;
+    FVeiculoAtual: TVeiculo;
     procedure SetCliente(const Value: TCliente);
     procedure SetDataDevolucao(const Value: TDateTime);
     procedure SetDataLocacao(const Value: TDateTime);
     procedure SetId(const Value: Integer);
     procedure SetTotal(const Value: Currency);
     procedure SetVeiculo(const Value: TVeiculo);
+    procedure SetHash(const Value: String);
+    procedure SetVeiculoAtual(const Value: TVeiculo);
   published
    property Id: Integer read FId write SetId;
    property Cliente: TCliente read FCliente write SetCliente;
    property Veiculo: TVeiculo read FVeiculo write SetVeiculo;
+   property VeiculoAtual: TVeiculo read FVeiculoAtual write SetVeiculoAtual;
    property DataLocacao: TDateTime read FDataLocacao write SetDataLocacao;
    property DataDevolucao: TDateTime read FDataDevolucao write SetDataDevolucao;
    property Total: Currency read FTotal write SetTotal;
+   property Hash: String read FHash write SetHash;
 
    procedure ValidarRegrasNegocios;
    function CalcularTotal: Currency;
+
+   constructor Create;
 
  end;
 
@@ -59,6 +67,11 @@ begin
   Result := nTotal;
 end;
 
+constructor TLocacao.Create;
+begin
+  FHash := IntToStr(Self.GetHashCode);
+end;
+
 procedure TLocacao.SetCliente(const Value: TCliente);
 begin
   FCliente := Value;
@@ -72,6 +85,11 @@ end;
 procedure TLocacao.SetDataLocacao(const Value: TDateTime);
 begin
   FDataLocacao := Value;
+end;
+
+procedure TLocacao.SetHash(const Value: String);
+begin
+  FHash := Value;
 end;
 
 procedure TLocacao.SetId(const Value: Integer);
@@ -89,6 +107,11 @@ begin
   FVeiculo := Value;
 end;
 
+procedure TLocacao.SetVeiculoAtual(const Value: TVeiculo);
+begin
+  FVeiculoAtual := Value;
+end;
+
 procedure TLocacao.ValidarRegrasNegocios;
 begin
   if FCliente = nil then
@@ -101,10 +124,12 @@ begin
     ExceptionLocacaoVeiculo;
   end;
 
-  if FVeiculo.Status = sAlugado then
+  if FVeiculo.Status = Alugado then
   begin
     ExceptionValorVeiculo;
   end;
+
+  FTotal := CalcularTotal;
 end;
 
 end.

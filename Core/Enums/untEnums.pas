@@ -3,7 +3,7 @@ unit untEnums;
 interface
 
 type
-  TStatus = (sDisponivel, sAlugado);
+  TStatus = (Disponivel, Alugado);
 
   TErrosCode = record
     NOME_NAO_INFORMADO,
@@ -18,7 +18,8 @@ type
     VALOR_INVALIDO,
     VEICULO_NAO_INFORMADO,
     CLIENTE_NAO_INFORMADO,
-    VEICULO_ALUGADO: Integer;
+    VEICULO_ALUGADO,
+    ERROR_BANCO_DADOS: Integer;
   end;
 
 
@@ -26,6 +27,7 @@ type
     CADASTRADO_COM_SUCESSO,
     ALTERADO_COM_SUCESSO,
     CONSULTA_REALIZADA_COM_SUCESSO,
+    CONSULTA_REALIZADA_SEM_RETORNO,
     CONSULTA_SEM_RETORNO,
     DELETADO_COM_SUCESSO,
     VEICULO_NAO_INFORMADO,
@@ -48,6 +50,7 @@ begin
   Result.VEICULO_NAO_INFORMADO          := 'Veiculo não informado.';
   Result.CLIENTE_NAO_INFORMADO          := 'Cliente não informado.';
   Result.VEICULO_ALUGADO                := 'Veiculo Alugado.';
+  Result.CONSULTA_REALIZADA_SEM_RETORNO := 'Consulta Realizada sem Retorno.';
 end;
 
 function RetornarErrorsCode: TErrosCode;
@@ -65,6 +68,7 @@ begin
   Result.VEICULO_NAO_INFORMADO   := 110;
   Result.CLIENTE_NAO_INFORMADO   := 111;
   Result.VEICULO_ALUGADO         := 112;
+  Result.ERROR_BANCO_DADOS       := 113;
 end;
 
 end.

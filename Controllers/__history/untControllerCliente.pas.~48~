@@ -1,0 +1,159 @@
+unit untControllerCliente;
+
+interface
+
+uses uRepositoryCliente, untCaseUseClient, untUseCaseCliente, untResponse, untDtoCliente, uCliente, untEnums,
+untPresenter;
+
+type
+  TControllerCliente = class
+  private
+    FCaseUse: TCaseUseClient;
+    FPresenter: TPresenter;
+    procedure SetCaseUse(const Value: TCaseUseClient);
+    procedure SetPresenter(const Value: TPresenter);
+  published
+    function Cadastrar(cNome, cDocumento, cCep, cLogradouro, cNumero, cComplemento, cBairro, cCidade, cUF, cTelefone: String): String;
+    function Alterar(id: Integer; cNome, cDocumento, cCep, cLogradouro, cNumero, cComplemento, cBairro, cCidade, cUF, cTelefone: String): String;
+    function Excluir(id: Integer): String;
+    function Consultar(id: Integer; cNome, cDocumento: String): String;
+
+    property CaseUse: TCaseUseClient read FCaseUse write SetCaseUse;
+    property Presenter: TPresenter read FPresenter write SetPresenter;
+
+    constructor Create(oRepository: TRepositoryCliente; oPresenter: TPresenter);
+    destructor Destroy;override;
+  end;
+
+implementation
+
+{ TControllerCliente }
+
+function TControllerCliente.Alterar(id: Integer; cNome, cDocumento, cCep,
+  cLogradouro, cNumero, cComplemento, cBairro, cCidade, cUF,
+  cTelefone: String): String;
+  var
+    oCliente: TCliente;
+    oResponse: TResponse;
+    oDtoCliente: DtoCliente;
+begin
+  oDtoCliente.id        := id;
+  oDtoCliente.Nome      := '';
+  oDtoCliente.Documento := '';
+
+  oResponse := CaseUse.Consultar(oDtoCliente);
+  
+  if((oResponse.Success)and(oResponse.Message = RetornarMsgResponse.CONSULTA_REALIZADA_COM_SUCESSO))then
+  begin
+    oCliente := TCliente(oResponse.Data[0]);
+    
+    if(cNome <> '')then
+      oCliente.Nome := cNome;
+      
+    if(cDocumento <> '')then
+      oCliente.Documento := cDocumento;
+      
+    if(cCep <> '')then      
+      oCliente.Cep := cCep;
+
+    if(cLogradouro <> '')then      
+      oCliente.Logradouro := cLogradouro;
+
+    if(cNumero <> '')then      
+      oCliente.Numero := cNumero;
+
+    if(cComplemento <> '')then      
+      oCliente.Complemento := cComplemento;
+
+    if(cBairro <> '')then      
+      oCliente.Bairro := cBairro;
+
+    if(cCidade <> '')then      
+      oCliente.Cidade := cCidade;
+
+    if(cUF <> '')then      
+      oCliente.UF := cUF;
+
+    if(cTelefone <> '')then      
+      oCliente.Telefone := cTelefone;  
+
+    oResponse := CaseUse.Alterar(oCliente);
+  end;
+
+  Result := Presenter.ConverterResponse(oResponse);
+end;
+
+function TControllerCliente.Cadastrar(cNome, cDocumento, cCep, cLogradouro,
+  cNumero, cComplemento, cBairro, cCidade, cUF, cTelefone: String): String;
+  var
+    oCliente: TCliente;
+    oResponse: TResponse;
+begin
+  oCliente             := TCliente.Create;
+  oCliente.Nome        := cNome;
+  oCliente.Documento   := cDocumento;
+  oCliente.Cep         := cCep;
+  oCliente.Logradouro  := cLogradouro;
+  oCliente.Numero      := cNumero;
+  oCliente.Complemento := cComplemento;
+  oCliente.Bairro      := cBairro;
+  oCliente.Cidade      := cCidade;
+  oCliente.UF          := cUF;
+  oCliente.Telefone    := cTelefone;
+
+  oResponse := CaseUse.Cadastrar(oCliente);
+
+  oCliente.Free;
+
+  Result := Presenter.ConverterResponse(oResponse);
+end;
+
+function TControllerCliente.Consultar(id: Integer; cNome,
+  cDocumento: String): String;
+var
+  oResponse: TResponse;
+  oDtoCliente: DtoCliente;
+begin
+  oDtoCliente.id        := id;
+  oDtoCliente.Nome      := cNome;
+  oDtoCliente.Documento := cDocumento;
+
+  oResponse := CaseUse.Consultar(oDtoCliente);
+
+  Result := Presenter.ConverterResponse(oResponse);
+end;
+
+constructor TControllerCliente.Create(oRepository: TRepositoryCliente; oPresenter: TPresenter);
+begin
+  Self.Presenter := oPresenter;
+  CaseUse        := TCaseUseClient.Create(oRepository);
+end;
+
+destructor TControllerCliente.Destroy;
+begin
+  CaseUse.Free;
+  inherited;
+end;
+
+function TControllerCliente.Excluir(id: Integer): String;
+var
+  oResponse: TResponse;
+begin
+  oResponse := CaseUse.Excluir(id);
+  if(oResponse.Success)then
+    Result := 'Excluido com Sucesso!'
+  else
+    Result := 'Erro ao Excluir!';
+end;
+
+procedure TControllerCliente.SetCaseUse(const Value: TCaseUseClient);
+begin
+  FCaseUse := Value;
+end;
+
+procedure TControllerCliente.SetPresenter(const Value: TPresenter);
+begin
+  FPresenter := Value;
+end;
+
+end.

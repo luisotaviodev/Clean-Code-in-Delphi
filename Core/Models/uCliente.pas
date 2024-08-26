@@ -5,7 +5,7 @@ interface
 uses System.SysUtils, untExceptions;
 type
 
-Tcliente = class
+TCliente = class
   private
     FLogradouro: String;
     FBairro: String;

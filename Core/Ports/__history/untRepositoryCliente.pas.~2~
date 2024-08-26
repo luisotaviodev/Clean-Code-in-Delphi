@@ -1,0 +1,15 @@
+unit untRepositoryCliente;
+
+interface
+
+uses uCliente, untDtoCliente, System.Generics.Collections;
+
+type
+  IRepositoryCliente = interface
+    procedure Cadastrar(oCliente: TCliente);
+    procedure Alterar(oCliente: TCliente);
+
+  end;
+implementation
+
+end.

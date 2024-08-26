@@ -1,0 +1,15 @@
+unit untPresenter;
+
+interface
+
+uses untResponse, uCliente, System.Generics.Collections;
+
+type
+  IPresenter = Interface
+    function ConverterResponse(oResponse: TResponse): String;
+    function ConverterCliente(oCliente: TCliente): String;
+  End;
+
+implementation
+
+end.

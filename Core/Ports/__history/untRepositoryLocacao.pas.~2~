@@ -1,0 +1,16 @@
+unit untRepositoryLocacao;
+
+interface
+
+uses uLocacao, untDtoLocacao, System.Generics.Collections;
+type
+  IRepositoryLocacao = interface
+    procedure Cadastrar(oLocacao: TLocacao);
+    procedure Alterar(oLocacao: TLocacao);
+    procedure Excluir(id: Integer);
+    function Consultar(dtoLocacao: TLocacao): TList<TLocacao>;
+  end;
+
+implementation
+
+end.

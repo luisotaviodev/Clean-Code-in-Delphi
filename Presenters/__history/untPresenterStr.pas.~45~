@@ -1,0 +1,109 @@
+unit untPresenterStr;
+
+interface
+
+uses untPresenter, untResponse, uCliente, uVeiculo, uLocacao, System.SysUtils, System.Generics.Collections, uUtils;
+
+type
+  TPresenterStr = class (TInterfacedObject, TPresenter)
+    function ConverterResponse(oResponse: TResponse): String;
+    function ConverterCliente(oCliente: TCliente): String;
+    function ConverterVeiculo(oVeiculo: TVeiculo): String;
+    function ConverterLocacao(oLocacao: TLocacao): String;
+    function ConverterLista(oLista: TList<TObject>): String;
+  end;
+
+implementation
+
+{ TPresenterStr }
+
+function TPresenterStr.ConverterCliente(oCliente: TCliente): String;
+var
+  cCliente: String;
+begin
+  cCliente := 'Id:          ' + IntToStr(oCliente.Id)
+          +QL+'Nome:        ' + oCliente.Nome
+          +QL+'Documento:   ' + oCliente.Documento
+          +QL+'Cep:         ' + oCliente.Cep
+          +QL+'Logradouro:  ' + oCliente.Logradouro
+          +QL+'Numero:      ' + oCliente.Numero
+          +QL+'Complemento: ' + oCliente.Complemento
+          +QL+'Bairro:      ' + oCliente.Bairro
+          +QL+'Cidade:      ' + oCliente.Cidade
+          +QL+'UF:          ' + oCliente.UF
+          +QL+'Telefone:    ' + oCliente.Telefone;
+
+  Result := cCliente;
+end;
+
+function TPresenterStr.ConverterLista(oLista: TList<TObject>): String;
+var
+  cLista: String;
+  oObject: TObject;
+  i: Integer;
+begin
+  if((Assigned(oLista))and(oLista.Count > 0))then
+  begin
+    for i := 0 to oLista.Count -1 do
+    begin
+      oObject := oLista.Items[i];
+
+      if(oObject is TCliente)then
+      begin
+        cLista := cLista + ConverterCliente(TCliente(oObject))+QL;
+      end;
+
+      if(oObject is TVeiculo)then
+      begin
+        cLista := cLista + ConverterVeiculo(TVeiculo(oObject))+QL;
+      end;
+    end;
+  end;
+  Result := cLista;
+end;
+
+function TPresenterStr.ConverterLocacao(oLocacao: TLocacao): String;
+var
+  cLocacao: String;
+begin
+  cLocacao := 'Id:     ' + IntToStr(oLocacao.Id)
+          +QL+'Cliente:   ' + ConverterCliente(oLocacao.Cliente)
+          +QL+'Veiculo:  ' + ConverterVeiculo(oLocacao.Veiculo)
+          +QL+'Status: ' + ConverterStatusStr(oLocacao.Status)
+          +QL+'Valor:  ' + CurrToStr(oLocacao.Valor);
+
+  Result := cLocacao;
+end;
+end;
+
+function TPresenterStr.ConverterResponse(oResponse: TResponse): String;
+var
+  cResponse, cSuccess: String;
+begin
+  if(oResponse.Success)then
+    cSuccess := 'True'
+  else
+    cSuccess := 'False';
+
+  cResponse := 'Success:   ' + cSuccess
+           +QL+'ErrorCode: ' + IntToStr(oResponse.ErrorCode)
+           +QL+'Message:   ' + oResponse.Message
+           +QL+'Data:      ' + ConverterLista(oResponse.Data);
+
+  Result := cResponse;
+end;
+
+function TPresenterStr.ConverterVeiculo(oVeiculo: TVeiculo): String;
+var
+  cVeiculo: String;
+begin
+  cVeiculo := 'Id:     ' + IntToStr(oVeiculo.Id)
+          +QL+'Nome:   ' + oVeiculo.Nome
+          +QL+'Placa:  ' + oVeiculo.Placa
+          +QL+'Status: ' + ConverterStatusStr(oVeiculo.Status)
+          +QL+'Valor:  ' + CurrToStr(oVeiculo.Valor);
+
+  Result := cVeiculo;
+end;
+
+end.

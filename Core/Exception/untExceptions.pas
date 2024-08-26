@@ -23,6 +23,7 @@ TExceptionLocacaoVeiculo         = class(Exception);
 TExceptionLocacaoCliente         = class(Exception);
 TExceptionLocacaoVeiculoAlugado  = class(Exception);
 
+TExceptionDatabase               = class(Exception);
 
 //Exceptions Cliente
 procedure ExceptionNome;
@@ -44,7 +45,14 @@ procedure ExceptionLocacaoVeiculo;
 procedure ExceptionLocacaoCliente;
 procedure ExceptionLocacaoVeiculoAlugado;
 
+procedure ExceptionDatabase(cMessage: String);
+
 implementation
+
+procedure ExceptionDatabase(cMessage: String);
+begin
+  raise TExceptionDatabase.Create(cMessage);
+end;
 
 procedure ExceptionNome;
 begin

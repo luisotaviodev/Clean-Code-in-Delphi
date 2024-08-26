@@ -128,6 +128,9 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
+        <BRCC_OutputDir>.\</BRCC_OutputDir>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Manifest_File>(None)</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -156,6 +159,19 @@
         <DCCReference Include="..\..\Core\Ports\untUseCaseLocacao.pas"/>
         <DCCReference Include="..\..\Core\DTO\untDtoLocacao.pas"/>
         <DCCReference Include="..\..\Core\UseCases\untCaseUseLocacao.pas"/>
+        <DCCReference Include="..\..\Core\Ports\untRepositoryCliente.pas"/>
+        <DCCReference Include="..\..\Repository\untConfigDB.pas"/>
+        <DCCReference Include="..\..\Repository\uRepositoryCliente.pas"/>
+        <DCCReference Include="..\..\Core\Ports\untRepositoryVeiculo.pas"/>
+        <DCCReference Include="..\..\Repository\uRepositoryVeiculo.pas"/>
+        <DCCReference Include="..\..\Core\Ports\untRepositoryLocacao.pas"/>
+        <DCCReference Include="..\..\Repository\uRepositoryLocacao.pas"/>
+        <DCCReference Include="..\..\Controllers\untControllerCliente.pas"/>
+        <DCCReference Include="..\..\Controllers\untControllerVeiculo.pas"/>
+        <DCCReference Include="..\..\Controllers\untControllerLocacao.pas"/>
+        <DCCReference Include="..\..\Presenters\untPresenter.pas"/>
+        <DCCReference Include="..\..\Presenters\untPresenterStr.pas"/>
+        <DCCReference Include="..\..\Presenters\untPresenterJson.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -176,6 +192,13 @@
                 <Source>
                     <Source Name="MainSource">locacaoConsole.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k250.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp250.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Usuário\Downloads\fortesreport-ce-4.0.1.2\fortesreport-ce-4.0.1.2\Binary\LibD25\dclfrce.bpl">File C:\Users\Usuário\Downloads\fortesreport-ce-4.0.1.2\fortesreport-ce-4.0.1.2\Binary\LibD25\dclfrce.bpl not found</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">

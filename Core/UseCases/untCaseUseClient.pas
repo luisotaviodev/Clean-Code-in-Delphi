@@ -1,28 +1,45 @@
 unit untCaseUseClient;
 
 interface
- uses untUseCaseCliente, System.SysUtils, untDTOCliente, untResponse, uCliente, untEnums, uUtils, untExceptions;
+ uses untUseCaseCliente, System.SysUtils, untDTOCliente, untResponse, uCliente, untEnums, uUtils, untExceptions, uRepositoryCliente
+ ,System.Generics.Collections;
 
  type
    TCaseUseClient = class(TInterfacedObject, ICaseUseCliente)
-     function Cadastrar(cliente: TCliente): TResponse;
-     function Alterar(cliente: TCliente): TResponse;
+
+   private
+     FRepository: TRepositoryCliente;
+     FLista: TObjectList<TCliente>;
+     FListaObject: TObjectList<TObject>;
+    procedure SetLista(const Value: TObjectList<TCliente>);
+    procedure SetListaObject(const Value: TObjectList<TObject>);
+
+   public
+     function Cadastrar(oCliente: TCliente): TResponse;
+     function Alterar(oCliente: TCliente): TResponse;
      function Excluir(id: Integer): TResponse;
      function Consultar(Dto: DtoCliente): TResponse;
+     property Lista: TObjectList<TCliente> read FLista write SetLista;
+     property ListaObject: TObjectList<TObject> read FListaObject write SetListaObject;
      procedure ValidarID(id: Integer);
+
+     constructor Create(oRepository: TRepositoryCliente);
+     destructor Destroy; override;
+
    end;
 
 implementation
 
 { TCaseUseClient }
 
-function TCaseUseClient.Alterar(cliente: TCliente): TResponse;
+function TCaseUseClient.Alterar(oCliente: TCliente): TResponse;
 var
   oAlterar: TResponse;
 begin
   try
-    cliente.ValidarRegrasNegocios;
+    oCliente.ValidarRegrasNegocios;
 
+    FRepository.Alterar(oCliente);
     oAlterar.Success   := True;
     oAlterar.ErrorCode := 0;
     oAlterar.Message   := RetornarMsgResponse.ALTERADO_COM_SUCESSO;
@@ -37,12 +54,14 @@ begin
   Result := oAlterar;
 end;
 
-function TCaseUseClient.Cadastrar(cliente: TCliente): TResponse;
+function TCaseUseClient.Cadastrar(oCliente: TCliente): TResponse;
 var
   oCadastrar: TResponse;
 begin
   try
-    cliente.ValidarRegrasNegocios;
+    oCliente.ValidarRegrasNegocios;
+
+    FRepository.Cadastrar(oCliente);
 
     oCadastrar.Success   := True;
     oCadastrar.ErrorCode := 0;
@@ -63,10 +82,23 @@ var
   oConsultar: TResponse;
 begin
   try
-    oConsultar.Success   := True;
-    oConsultar.ErrorCode := 0;
-    oConsultar.Message   := RetornarMsgResponse.CONSULTA_REALIZADA_COM_SUCESSO;
-    oConsultar.Data      := nil;
+    ListaObject.Clear;
+    Lista := FRepository.Consultar(Dto);
+
+    if(Lista.Count > 0)then
+    begin
+      oConsultar.Success   := True;
+      oConsultar.ErrorCode := 0;
+      oConsultar.Message   := RetornarMsgResponse.CONSULTA_REALIZADA_COM_SUCESSO;
+      oConsultar.Data      := ListaClienteParaListaObject(ListaObject, Lista);
+    end
+    else
+    begin
+      oConsultar.Success   := True;
+      oConsultar.ErrorCode := 0;
+      oConsultar.Message   := RetornarMsgResponse.CONSULTA_REALIZADA_SEM_RETORNO;
+      oConsultar.Data      := nil;
+    end;
   except
     on e: Exception do
     begin
@@ -77,6 +109,20 @@ begin
   Result := oConsultar;
 end;
 
+constructor TCaseUseClient.Create(oRepository: TRepositoryCliente);
+begin
+  FRepository := oRepository;
+//  Lista       := TObjectList<TCliente>.Create;
+  ListaObject := TObjectList<TObject>.Create;
+end;
+
+destructor TCaseUseClient.Destroy;
+begin
+//  Lista.Free;
+//  FListaObject.Free;
+  inherited;
+end;
+
 function TCaseUseClient.Excluir(id: Integer): TResponse;
 var
   oExcluir: TResponse;
@@ -85,6 +131,7 @@ begin
 
     ValidarID(id);
 
+    FRepository.Excluir(id);
     oExcluir.Success   := True;
     oExcluir.ErrorCode := 0;
     oExcluir.Message   := RetornarMsgResponse.DELETADO_COM_SUCESSO;
@@ -97,6 +144,16 @@ begin
   end;
 
   Result := oExcluir;
+end;
+
+procedure TCaseUseClient.SetLista(const Value: TObjectList<TCliente>);
+begin
+  FLista := Value;
+end;
+
+procedure TCaseUseClient.SetListaObject(const Value: TObjectList<TObject>);
+begin
+  FListaObject := Value;
 end;
 
 procedure TCaseUseClient.ValidarID(id: Integer);

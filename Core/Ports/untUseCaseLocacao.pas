@@ -8,7 +8,7 @@ type
  ICaseUseLocacao = interface
    function Cadastrar(locacao: TLocacao): TResponse;
    function Alterar(locacao: TLocacao): TResponse;
-   function Excluir(locacao: TLocacao): TResponse;
+   function Excluir(id: Integer): TResponse;
    function Consultar(Dto: TDtoLocacao): TResponse;
  end;
 

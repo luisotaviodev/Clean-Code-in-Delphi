@@ -1,0 +1,151 @@
+unit untCaseUseVeiculo;
+
+interface
+
+uses
+ uVeiculo, untDtoVeiculo, untUseCaseVeiculo, untResponse, untEnums, uUtils, System.SysUtils, untExceptions,
+ System.Generics.Collections, uRepositoryVeiculo;
+
+ type
+   TCaseUseVeiculo = class(TInterfacedObject, ICaseUseVeiculo)
+  private
+    FRepository: TRepositoryVeiculo;
+    FListaObject: TObjectList<TObject>;
+    FLista: TObjectList<TVeiculo>;
+    procedure SetListaObject(const Value: TObjectList<TObject>);
+    procedure SetLista(const Value: TObjectList<TVeiculo>);
+  published
+    function Cadastrar(veiculo: TVeiculo): TResponse;
+    function Alterar(veiculo: TVeiculo): TResponse;
+    function Excluir(id: Integer): TResponse;
+    function Consultar(Dto: DtoVeiculo): TResponse;
+    procedure ValidarID(id: Integer);
+    property ListaObject: TObjectList<TObject> read FListaObject write SetListaObject;
+    property Lista: TObjectList<TVeiculo> read FLista write SetLista;
+
+    constructor Create(oRepository: TRepositoryVeiculo);
+    destructor Destroy; override;
+   end;
+
+implementation
+
+{ TCaseUseVeiculo }
+
+function TCaseUseVeiculo.Alterar(veiculo: TVeiculo): TResponse;
+var
+  oAlterar: TResponse;
+begin
+  try
+    veiculo.ValidarRegrasNegocios;
+
+    oAlterar.Success   := True;
+    oAlterar.ErrorCode := 0;
+    oAlterar.Message   := RetornarMsgResponse.ALTERADO_COM_SUCESSO;
+    oAlterar.Data      := nil;
+  except
+    on e: Exception do
+    begin
+      oAlterar := TratarException(e);
+    end;
+  end;
+
+  Result := oAlterar;
+end;
+
+function TCaseUseVeiculo.Cadastrar(veiculo: TVeiculo): TResponse;
+var
+  oCadastrar: TResponse;
+begin
+  try
+    veiculo.ValidarRegrasNegocios;
+
+    FRepository.Cadastrar(veiculo);
+
+    oCadastrar.Success   := True;
+    oCadastrar.ErrorCode := 0;
+    oCadastrar.Message   := RetornarMsgResponse.CADASTRADO_COM_SUCESSO;
+    oCadastrar.Data      := nil;
+  except
+    on e: Exception do
+    begin
+      oCadastrar := TratarException(e);
+    end;
+  end;
+
+  Result := oCadastrar;
+end;
+
+function TCaseUseVeiculo.Consultar(Dto: DtoVeiculo): TResponse;
+var
+  oConsultar: TResponse;
+begin
+  try
+    oConsultar.Success   := True;
+    oConsultar.ErrorCode := 0;
+    oConsultar.Message   := RetornarMsgResponse.CONSULTA_REALIZADA_COM_SUCESSO;
+    oConsultar.Data      := nil;
+  except
+    on e: Exception do
+    begin
+      oConsultar := TratarException(e);
+    end;
+  end;
+
+  Result := oConsultar;
+end;
+
+constructor TCaseUseVeiculo.Create(oRepository: TRepositoryVeiculo);
+begin
+  FRepository := oRepository;
+  FLista       := TObjectList<TVeiculo>.Create;
+  FListaObject := TObjectList<TObject>.Create;
+end;
+
+destructor TCaseUseVeiculo.Destroy;
+begin
+  Lista.Free;
+  FListaObject.Free;
+  inherited;
+end;
+
+function TCaseUseVeiculo.Excluir(id: Integer): TResponse;
+var
+  oExcluir: TResponse;
+begin
+  try
+    ValidarID(id);
+
+    FRepository.Excluir(id);
+    oExcluir.Success   := True;
+    oExcluir.ErrorCode := 0;
+    oExcluir.Message   := RetornarMsgResponse.DELETADO_COM_SUCESSO;
+    oExcluir.Data      := nil;
+  except
+    on e: Exception do
+    begin
+      oExcluir := TratarException(e);
+    end;
+  end;
+
+  Result := oExcluir;
+end;
+
+procedure TCaseUseVeiculo.SetLista(const Value: TObjectList<TVeiculo>);
+begin
+  FLista := Value;
+end;
+
+procedure TCaseUseVeiculo.SetListaObject(const Value: TObjectList<TObject>);
+begin
+  FListaObject := Value;
+end;
+
+procedure TCaseUseVeiculo.ValidarID(id: Integer);
+begin
+  if(id <=0)then
+  begin
+    ExceptionIdInvalido;
+  end;
+end;
+
+end.
